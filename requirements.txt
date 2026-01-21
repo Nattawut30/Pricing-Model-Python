@@ -5,3 +5,5 @@ scipy==1.11.4
 plotly==5.18.0
 matplotlib==3.8.2
 seaborn==0.13.1
+
+Updated: Jan 21, 2026
