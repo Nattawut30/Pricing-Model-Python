@@ -6,7 +6,10 @@
 
 ***Overview***
 - 
-Link: <br><br/>
+Link: https://nattawut-blsc.streamlit.app/ <br>
+Status: Active (Updated: Jan 22, 2026) <br>
+(If the web app link won't work, please kindly let me know.) <br>
+
 This is my options pricing calculator that combines educational clarity with real-world utility. It uses the Black-Scholes model to price European options and includes advanced features like implied volatility calculation, strategy analysis, and live market data integration. Built with Python and Streamlit, it serves both learning and practical analysis.
 
 # <p align="center">What is Black-Scholes model? <p/>
