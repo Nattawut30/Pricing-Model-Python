@@ -179,9 +179,9 @@ def get_recommendation(stock_price, strike_price, call_price, put_price, call_in
     
     # Time value analysis
     if call_time_value > call_price * 0.7:
-        recommendations.append("⏰ **High time value in calls** - May decay rapidly as expiration approaches")
+        recommendations.append("**High time value in calls** - May decay rapidly as expiration approaches")
     if put_time_value > put_price * 0.7:
-        recommendations.append("⏰ **High time value in puts** - May decay rapidly as expiration approaches")
+        recommendations.append("**High time value in puts** - May decay rapidly as expiration approaches")
     
     return recommendations
 
@@ -814,7 +814,7 @@ st.markdown("""
             </a>
         </p>
         <p style='font-size: 0.8em; color: #999; margin-top: 1rem;'>
-            ⚠️ For tactical analysis and hedging strategy only.
+            ✅ For quantitative analysis and hedging strategy only.
         </p>
     </div>
 """, unsafe_allow_html=True)
