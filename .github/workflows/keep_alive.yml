@@ -2,8 +2,8 @@ name: Keep Streamlit App Alive
 
 on:
   schedule:
-    - cron: '0 0 */3 * *' # รันทุก 3 วัน
-  workflow_dispatch:      # ปุ่มกดรันเองเพื่อทดสอบ
+    - cron: '0 0 */2 * *' # Every 2 days
+  workflow_dispatch:      # Manually test.
 
 jobs:
   ping:
