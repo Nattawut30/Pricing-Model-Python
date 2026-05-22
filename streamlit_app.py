@@ -36,7 +36,7 @@ from pricing_model import (
 
 # PAGE CONFIGURATION
 st.set_page_config(
-    page_title="Options Pricing Calculator",
+    page_title="Options Pricing Analyzer",
     page_icon="📊",
     layout="wide",
     initial_sidebar_state="expanded"
@@ -159,23 +159,23 @@ def get_recommendation(stock_price, strike_price, call_price, put_price, call_in
     
     # Call recommendation because im so bored
     if moneyness > 1.1:
-        recommendations.append("📞 **CALL is Deep ITM** - Consider if you expect continued upward movement")
+        recommendations.append("**CALL is Deep ITM** - Consider if you expect continued upward movement")
     elif moneyness > 1.02:
-        recommendations.append("📞 **CALL is ITM** - Good if you're bullish on the stock")
+        recommendations.append("**CALL is ITM** - Good if you're bullish on the stock")
     elif moneyness > 0.98:
-        recommendations.append("📞 **CALL is ATM** - Balanced risk/reward, high gamma")
+        recommendations.append("**CALL is ATM** - Balanced risk/reward, high gamma")
     else:
-        recommendations.append("📞 **CALL is OTM** - Lower cost but requires significant price increase")
+        recommendations.append("**CALL is OTM** - Lower cost but requires significant price increase")
     
     # Put recommendation
     if moneyness < 0.9:
-        recommendations.append("📉 **PUT is Deep ITM** - Consider if you expect continued downward movement")
+        recommendations.append("**PUT is Deep ITM** - Consider if you expect continued downward movement")
     elif moneyness < 0.98:
-        recommendations.append("📉 **PUT is ITM** - Good if you're bearish on the stock")
+        recommendations.append("**PUT is ITM** - Good if you're bearish on the stock")
     elif moneyness < 1.02:
-        recommendations.append("📉 **PUT is ATM** - Balanced risk/reward, high gamma")
+        recommendations.append("**PUT is ATM** - Balanced risk/reward, high gamma")
     else:
-        recommendations.append("📉 **PUT is OTM** - Lower cost but requires significant price decrease")
+        recommendations.append("**PUT is OTM** - Lower cost but requires significant price decrease")
     
     # Time value analysis
     if call_time_value > call_price * 0.7:
@@ -186,7 +186,7 @@ def get_recommendation(stock_price, strike_price, call_price, put_price, call_in
     return recommendations
 
 # HEADER
-st.markdown('<div class="main-header">📊 Options Pricing Calculator</div>', unsafe_allow_html=True)
+st.markdown('<div class="main-header">📊 Options Pricing Analyzer</div>', unsafe_allow_html=True)
 st.markdown('<div class="sub-header">Black-Scholes Model for European Options</div>', unsafe_allow_html=True)
 
 # SIDEBAR
@@ -208,7 +208,7 @@ calc_mode = st.sidebar.radio(
 )
 
 st.sidebar.markdown("---")
-st.sidebar.markdown("### 📈 Input Method")
+st.sidebar.markdown("### Input Method")
 
 input_method = st.sidebar.radio(
     "Choose input method:",
@@ -224,19 +224,19 @@ if input_method == "Fetch Live Data":
         help="Enter stock symbol (e.g., AAPL, TSLA, MSFT)"
     ).upper()
     
-    if st.sidebar.button("📊 Fetch Real-Time Data"):
+    if st.sidebar.button("Fetch Real-Time Data"):
         with st.spinner(f"Fetching data for {ticker}..."):
             current_price, hist_vol = fetch_stock_data(ticker)
             
             if current_price:
                 st.session_state.fetched_price = current_price
                 st.session_state.fetched_vol = hist_vol * 100
-                st.sidebar.success(f"✅ Loaded {ticker}: ${current_price:.2f}")
+                st.sidebar.success(f"Loaded {ticker}: ${current_price:.2f}")
             else:
-                st.sidebar.error("❌ Failed to fetch data. Check ticker symbol.")
+                st.sidebar.error("Failed to fetch data. Check ticker symbol.")
 
 # Parameters input
-st.sidebar.markdown("### 💰 Option Parameters")
+st.sidebar.markdown("### Option Parameters")
 
 if input_method == "Fetch Live Data" and 'fetched_price' in st.session_state:
     stock_price = st.sidebar.number_input(
@@ -268,13 +268,13 @@ strike_price = st.sidebar.number_input(
 
 moneyness = stock_price / strike_price
 if moneyness > 1.05:
-    st.sidebar.info("📈 In-The-Money (ITM) for Calls")
+    st.sidebar.info("In-The-Money (ITM) for Calls")
 elif moneyness < 0.95:
-    st.sidebar.info("📉 In-The-Money (ITM) for Puts")
+    st.sidebar.info("In-The-Money (ITM) for Puts")
 else:
-    st.sidebar.info("📊 At-The-Money (ATM)")
+    st.sidebar.info("At-The-Money (ATM)")
 
-st.sidebar.markdown("### 📅 Time & Market")
+st.sidebar.markdown("### Time & Market")
 
 days_to_expiry = st.sidebar.slider(
     "Days to Expiration",
@@ -315,7 +315,7 @@ risk_free_rate = st.sidebar.slider(
 st.sidebar.markdown("---")
 
 calculate_btn = st.sidebar.button(
-    "🚀 Calculate Options",
+    "Calculate Options",
     type="primary",
     use_container_width=True
 )
@@ -356,7 +356,7 @@ if calculate_btn or 'results' in st.session_state:
             st.session_state.calculation_history.pop(0)
         
     except Exception as e:
-        st.error(f"❌ Calculation Error: {str(e)}")
+        st.error(f"Calculation Error: {str(e)}")
         st.stop()
 
 # DISPLAY RESULTS
@@ -365,12 +365,12 @@ if 'results' in st.session_state:
     params = st.session_state.params
     
     # OPTION PRICES - SIDE BY SIDE
-    st.markdown("## 💰 Option Prices")
+    st.markdown("## Option Prices")
     
     col1, col2 = st.columns(2)
     
     with col1:
-        st.markdown("### 📞 CALL OPTION")
+        st.markdown("### CALL OPTION")
         st.metric(
             "Call Price",
             f"${results['call_price']:.2f}",
@@ -388,7 +388,7 @@ if 'results' in st.session_state:
         )
     
     with col2:
-        st.markdown("### 📉 PUT OPTION")
+        st.markdown("### PUT OPTION")
         st.metric(
             "Put Price",
             f"${results['put_price']:.2f}",
@@ -408,10 +408,10 @@ if 'results' in st.session_state:
     # Put-Call Parity Check
     parity = results['parity_check']
     if parity['is_valid']:
-        st.markdown('<div class="success-box">✅ <b>Put-Call Parity Verified</b> - Calculations are mathematically consistent (Difference: $' + f"{parity['difference']:.4f}" + ')</div>', unsafe_allow_html=True)
+        st.markdown('<div class="success-box"><b>Put-Call Parity Verified</b> - Calculations are mathematically consistent (Difference: $' + f"{parity['difference']:.4f}" + ')</div>', unsafe_allow_html=True)
     
     # RECOMMENDATIONS
-    st.markdown("## 🎯 Trading Recommendations")
+    st.markdown("## Trading Recommendations")
     recommendations = get_recommendation(
         params['stock_price'],
         params['strike_price'],
@@ -424,29 +424,29 @@ if 'results' in st.session_state:
     for rec in recommendations:
         st.markdown(f'<div class="info-box">{rec}</div>', unsafe_allow_html=True)
     
-    st.markdown('<div class="warning-box">⚠️ <b>Disclaimer:</b> These are analytical insights based on current market conditions. Not financial advice. Always consult professionals before trading.</div>', unsafe_allow_html=True)
+    st.markdown('<div class="warning-box"><b>Disclaimer:</b> These are analytical insights based on current market conditions. Not financial advice. Always consult professionals before trading.</div>', unsafe_allow_html=True)
     
     st.markdown("---")
     
     # TABS
     tab1, tab2, tab3, tab4, tab5 = st.tabs([
-        "📊 Greeks Analysis",
-        "📈 Price Sensitivity",
-        "🎯 Strategy Builder",
-        "🔥 Advanced Analysis",
-        "📜 History & Export"
+        "Greeks Analysis",
+        "Price Sensitivity",
+        "Strategy Builder",
+        "Advanced Analysis",
+        "History & Export"
     ])
     
     # TAB 1: GREEKS
     with tab1:
-        st.markdown("### 📊 Option Greeks - Risk Metrics")
+        st.markdown("### Option Greeks - Risk Metrics")
         
         greeks = results['greeks']
         
         col1, col2 = st.columns(2)
         
         with col1:
-            st.markdown("#### 📞 Call Option Greeks")
+            st.markdown("#### Call Option Greeks")
             
             greeks_data_call = {
                 'Greek': ['Delta (Δ)', 'Gamma (Γ)', 'Theta (Θ)', 'Vega (ν)', 'Rho (ρ)'],
@@ -487,7 +487,7 @@ if 'results' in st.session_state:
             st.plotly_chart(fig_delta_call, use_container_width=True)
         
         with col2:
-            st.markdown("#### 📉 Put Option Greeks")
+            st.markdown("#### Put Option Greeks")
             
             greeks_data_put = {
                 'Greek': ['Delta (Δ)', 'Gamma (Γ)', 'Theta (Θ)', 'Vega (ν)', 'Rho (ρ)'],
@@ -527,7 +527,7 @@ if 'results' in st.session_state:
             fig_delta_put.update_layout(height=250)
             st.plotly_chart(fig_delta_put, use_container_width=True)
         
-        with st.expander("📚 Understanding Greeks"):
+        with st.expander("Understanding Greeks"):
             st.markdown("""
             ### What Each Greek Tells You:
             
@@ -554,7 +554,7 @@ if 'results' in st.session_state:
     
     # TAB 2: PRICE SENSITIVITY
     with tab2:
-        st.markdown("### 📈 Price Sensitivity Analysis")
+        st.markdown("### Price Sensitivity Analysis")
         
         S_range = np.linspace(stock_price * 0.7, stock_price * 1.3, 100)
         vol_range = np.linspace(max(1, volatility - 20), volatility + 20, 100)
@@ -624,7 +624,7 @@ if 'results' in st.session_state:
     
     # TAB 3: STRATEGY BUILDER
     with tab3:
-        st.markdown("### 🎯 Option Strategy Analyzer")
+        st.markdown("### Option Strategy Analyzer")
         
         strategy = st.selectbox(
             "Select Strategy",
@@ -678,12 +678,12 @@ if 'results' in st.session_state:
     
     # TAB 4: ADVANCED ANALYSIS
     with tab4:
-        st.markdown("### 🔥 Advanced Analysis Tools")
+        st.markdown("### Advanced Analysis Tools")
         
         col1, col2 = st.columns(2)
         
         with col1:
-            st.markdown("#### 🌡️ Implied Volatility Calculator")
+            st.markdown("#### Implied Volatility Calculator")
             
             market_price_input = st.number_input(
                 "Observed Market Price ($)",
@@ -713,7 +713,7 @@ if 'results' in st.session_state:
                         st.error("Could not calculate IV. Check inputs.")
         
         with col2:
-            st.markdown("#### 📊 Price Surface Heatmap")
+            st.markdown("#### Price Surface Heatmap")
             
             if st.button("Generate 3D Surface"):
                 with st.spinner("Generating heatmap..."):
@@ -751,7 +751,7 @@ if 'results' in st.session_state:
     
     # TAB 5: HISTORY & EXPORT
     with tab5:
-        st.markdown("### 📜 Calculation History")
+        st.markdown("### Calculation History")
         
         if st.session_state.calculation_history:
             history_df = pd.DataFrame(st.session_state.calculation_history)
@@ -762,7 +762,7 @@ if 'results' in st.session_state:
             with col1:
                 csv = export_to_csv(st.session_state.calculation_history, 'history.csv')
                 st.download_button(
-                    "📥 Download History (CSV)",
+                    "Download History (CSV)",
                     csv,
                     "options_history.csv",
                     "text/csv",
@@ -789,7 +789,7 @@ if 'results' in st.session_state:
                 
                 csv_current = export_to_csv(current_export, 'current.csv')
                 st.download_button(
-                    "📥 Download Current Results",
+                    "Download Current Results",
                     csv_current,
                     "current_calculation.csv",
                     "text/csv",
@@ -802,7 +802,7 @@ if 'results' in st.session_state:
 st.markdown("---")
 st.markdown("""
     <div style='text-align: center; color: #666; padding: 2rem 0;'>
-        <h3>📊 Options Pricing Calculator</h3>
+        <h3>Options Pricing Analyzer</h3>
         <p><b>Black-Scholes Model • European Options</b></p>
         <p style='font-size: 0.9em; margin-top: 1rem;'>
             Created by <b>Nattawut Boonnoon</b><br>
@@ -814,7 +814,7 @@ st.markdown("""
             </a>
         </p>
         <p style='font-size: 0.8em; color: #999; margin-top: 1rem;'>
-            ⚠️ For educational and analytical purposes only. Not financial advice.
+            ⚠️ For tactical analysis and hedging strategy only.
         </p>
     </div>
 """, unsafe_allow_html=True)
